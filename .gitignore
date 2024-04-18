@@ -1,5 +1,7 @@
 # Project specific files/dirs
 data/
+**/*.gif
+**/*.pdf
 
 # MAC
 **/.DS_Store
