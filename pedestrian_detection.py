@@ -16,7 +16,7 @@ def main():
 
     im = Image()
     frames = []
-    for index, frame in enumerate(im.get_images("pedestrian_detection_dataset/pedestrians/input")):
+    for index, frame in enumerate(im.get_images(r"data/pedestrian detection dataset//pedestrians/input")):
         if index >= START_FRAME:
             f = np.array(frame.ravel(), dtype=np.float64)
             nf = np.linalg.norm(f)
