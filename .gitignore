@@ -2,6 +2,7 @@
 data/
 **/*.gif
 **/*.pdf
+**/*.csv
 
 # MAC
 **/.DS_Store
