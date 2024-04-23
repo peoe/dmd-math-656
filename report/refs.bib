@@ -1,0 +1,309 @@
+@online{Balabanov2022,
+  title = {Randomized {{Cholesky QR}} Factorizations},
+  author = {Balabanov, Oleg},
+  date = {2022},
+  eprint = {2210.09953},
+  eprinttype = {arxiv},
+  doi = {10.48550/arXiv.2210.09953},
+  abstract = {This article proposes and analyzes several variants of the randomized Cholesky QR factorization of a matrix \$X\$. Instead of computing the R factor from \$X\textasciicircum T X\$, as is done by standard methods, we obtain it from a small, efficiently computable random sketch of \$X\$, thus saving computational cost and improving numerical stability. The proposed direct variant of the randomized Cholesky QR requires only half the flops and the same communication cost as the classical Cholesky QR. At the same time, it is more robust since it is guaranteed to be stable whenever the input matrix is numerically full-rank. The rank-revealing randomized Cholesky QR variant has the ability to sort out the linearly dependent columns of \$X\$, which allows to have an unconditional numerical stability and reduce the computational cost when \$X\$ is rank-deficient. We also depict a column-oriented randomized Cholesky QR that establishes the connection with the randomized Gram-Schmidt process, and a reduced variant that outputs a low-dimensional projection of the Q factor rather than the full factor and therefore yields drastic computational savings. It is shown that performing minor operations in higher precision in the proposed algorithms can allow stability with working unit roundoff independent of the dominant matrix dimension. This feature may be of particular interest for a QR factorization of tall-and-skinny matrices on low-precision architectures.},
+  pubstate = {preprint}
+}
+
+@article{Bi2018,
+  title = {Dynamic {{Mode Decomposition Based Video Shot Detection}}},
+  author = {Bi, Chongke and Yuan, Ye and Zhang, JiaWan and Shi, Yun and Xiang, Yiqing and Wang, Yuehuan and Zhang, RongHui},
+  date = {2018},
+  journaltitle = {IEEE Access},
+  volume = {6},
+  pages = {21397--21407},
+  issn = {2169-3536},
+  doi = {10.1109/ACCESS.2018.2825106},
+  abstract = {Shot detection is widely used in video semantic analysis, video scene segmentation, and video retrieval. However, this is still a challenging task, due to the weak boundary and a sudden change in brightness or foreground objects. In this paper, we propose a new framework based on dynamic mode decomposition (DMD) for shot boundary detection. Because the DMD can extract several temporal foreground modes and one temporal background mode from video data, shot boundaries can be detected when the amplitude changes sharply. Here, the amplitude is the DMD coefficient to restore the video. The main idea behind the shot boundaries detection is finding the amplitude change of background mode. We can reduce error detection when the illumination changes sharply or the foreground object (or camera) moves very quickly. At the same time, our algorithm has a high detection accuracy, even the color changes are not obvious, the illumination changes slowly, or the foreground objects overlap. Meanwhile, a color space for DMD is selected for reducing false detection. Finally, the effectiveness of our method will be demonstrated through detecting the shot boundaries of the various content types of videos.},
+  eventtitle = {{{IEEE Access}}}
+}
+
+@article{Brand2006,
+  title = {Fast Low-Rank Modifications of the Thin Singular Value Decomposition},
+  author = {Brand, Matthew},
+  date = {2006},
+  journaltitle = {Linear Algebra and its Applications},
+  shortjournal = {Linear Algebra and its Applications},
+  series = {Special {{Issue}} on {{Large Scale Linear}} and {{Nonlinear Eigenvalue Problems}}},
+  volume = {415},
+  number = {1},
+  pages = {20--30},
+  issn = {0024-3795},
+  doi = {10.1016/j.laa.2005.07.021},
+  abstract = {This paper develops an identity for additive modifications of a singular value decomposition (SVD) to reflect updates, downdates, shifts, and edits of the data matrix. This sets the stage for fast and memory-efficient sequential algorithms for tracking singular values and subspaces. In conjunction with a fast solution for the pseudo-inverse of a submatrix of an orthogonal matrix, we develop a scheme for computing a thin SVD of streaming data in a single pass with linear time complexity: A rank-r thin SVD of a p\texttimes q matrix can be computed in O(pqr) time for r{$\leq$}min(p,q).}
+}
+
+@article{Brunton2016a,
+  title = {Compressed Sensing and Dynamic Mode Decomposition},
+  author = {Brunton, Steven L. and Proctor, Joshua L. and Tu, Jonathan H. and Kutz, J. Nathan},
+  date = {2016},
+  journaltitle = {Journal of Computational Dynamics},
+  shortjournal = {JCD},
+  volume = {2},
+  number = {2},
+  pages = {165--191},
+  publisher = {Journal of Computational Dynamics},
+  issn = {2158-2491},
+  doi = {10.3934/jcd.2015002},
+  abstract = {This work develops compressed sensing strategies for computing the dynamic mode decomposition (DMD) from heavily subsampled or compressed data.The resulting DMD eigenvalues are equal to DMD eigenvalues from the full-state data.It is then possible to reconstruct full-state DMD eigenvectors using \$\textbackslash ell\_1\$-minimization or greedy algorithms.If full-state snapshots are available, it may be computationally beneficial to compress the data, compute DMD on the compressed data, and then reconstruct full-state modes by applying the compressed DMD transforms to full-state snapshots.~ ~These results rely on a number of theoretical advances.  First, we establish connections between DMD on full-state and compressed data.  Next, we demonstrate the invariance of the DMD algorithm to left and right unitary transformations.When data and modes are sparse in some transform basis, we show a similar invariance of DMD to measurement matrices that satisfy the restricted isometry property from compressed sensing.We demonstrate the success of this architecture on two model systems.In the first example, we construct a spatial signal from a sparse vector of Fourier coefficients with a linear dynamical system driving the coefficients.In the second example, we consider the double gyre flow field, which is a model for chaotic mixing in the ocean.~ ~ A video abstract of this work may be found at: http://youtu.be/4tLSq\_PEFms.}
+}
+
+@article{Daniel1976,
+  title = {Reorthogonalization and Stable Algorithms for Updating the {{Gram-Schmidt}} {$QR$} Factorization},
+  author = {Daniel, J. W. and Gragg, W. B. and Kaufman, L. and Stewart, G. W.},
+  date = {1976},
+  journaltitle = {Mathematics of Computation},
+  shortjournal = {Math. Comp.},
+  volume = {30},
+  number = {136},
+  pages = {772--795},
+  issn = {0025-5718, 1088-6842},
+  doi = {10.1090/S0025-5718-1976-0431641-8},
+  abstract = {Advancing research. Creating connections.}
+}
+
+@incollection{Drmac2020,
+  title = {Dynamic {{Mode Decomposition}}---{{A Numerical Linear Algebra Perspective}}},
+  booktitle = {The {{Koopman Operator}} in {{Systems}} and {{Control}}: {{Concepts}}, {{Methodologies}}, and {{Applications}}},
+  author = {Drma\v c, Zlatko},
+  editor = {Mauroy, Alexandre and Mezi\'c, Igor and Susuki, Yoshihiko},
+  date = {2020},
+  series = {Lecture {{Notes}} in {{Control}} and {{Information Sciences}}},
+  pages = {161--194},
+  publisher = {Springer International Publishing},
+  location = {Cham},
+  doi = {10.1007/978-3-030-35713-9_7},
+  abstract = {Data-driven scenarios in analysis and modeling of complex dynamical systems pose formidable challenges to computational science and motivate development of new numerical methods with ever increasing level of sophistication and complexity. An excellent example is computational fluid dynamics (CFD), where the dynamic mode decomposition (DMD) and its enhancement, the sparsity promoting DMD (DMDSP) have emerged as tools of trade for analysis of flow field data, with a host of applications. The problems of high dimension, noisy data, theoretical foundation in connection with the Koopman operator and ergodic theory, and potential applicability in broad spectrum of engineering problems have triggered extensive research and resulted in many theoretical and computational advancements of the DMD framework. This chapter revisits the DMD from the core numerical linear algebra perspective. Recent results on improving numerical robustness and functionality of DMD are reviewed and supplemented with new insights. Further, a new variation of the algorithm is proposed and used as a case study for development of a numerical algorithm in the DMD framework.},
+  isbn = {978-3-030-35713-9}
+}
+
+@article{Drmac2020VandermondeKhatriRao,
+  title = {On {{Least Squares Problems}} with {{Certain Vandermonde--Khatri--Rao Structure}} with {{Applications}} to {{DMD}}},
+  author = {Drma\v c, Zlatko and Mezi\'c, Igor and Mohr, Ryan},
+  date = {2020},
+  journaltitle = {SIAM Journal on Scientific Computing},
+  shortjournal = {SIAM J. Sci. Comput.},
+  volume = {42},
+  number = {5},
+  pages = {A3250-A3284},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  issn = {1064-8275},
+  doi = {10.1137/19M1288474},
+  abstract = {The goals and contributions of this paper are twofold. It provides a new numerically robust computational tool for data driven Koopman spectral analysis, based on the natural formulation via the Krylov decomposition with the Frobenius companion matrix, and by using its eigenvectors explicitly---these are the columns of the inverse of the notoriously ill-conditioned  Vandermonde matrix. The key step to curb ill-conditioning is the discrete Fourier transform of the snapshots; in the new representation, the Vandermonde matrix is transformed into a generalized Cauchy matrix, which then allows accurate computation by specially tailored algorithms of numerical linear algebra. The second goal is to shed light on the connection between the formulas for optimal reconstruction weights when reconstructing snapshots using subsets of the computed Koopman modes. It is shown how using a certain weaker form of generalized inverses leads to explicit reconstruction formulas that match the abstract results from Koopman spectral theory, in particular the generalized Laplace analysis.}
+}
+
+@article{Erichson2016,
+  title = {Randomized Low-Rank {{Dynamic Mode Decomposition}} for Motion Detection},
+  author = {Erichson, N. Benjamin and Donovan, Carl},
+  date = {2016},
+  journaltitle = {Computer Vision and Image Understanding},
+  shortjournal = {Computer Vision and Image Understanding},
+  series = {Award \& {{Selection}} of {{Papers}} of {{ACCV}} 2014},
+  volume = {146},
+  pages = {40--50},
+  issn = {1077-3142},
+  doi = {10.1016/j.cviu.2016.02.005},
+  abstract = {This paper introduces a fast algorithm for randomized computation of a low-rank Dynamic Mode Decomposition (DMD) of a matrix. Here we consider this matrix to represent the development of a spatial grid through time e.g. data from a static video source. DMD was originally introduced in the fluid mechanics community, but is also suitable for motion detection in video streams and its use for background subtraction has received little previous investigation. In this study we present a comprehensive evaluation of background subtraction, using the randomized DMD and compare the results with leading robust principal component analysis algorithms. The results are convincing and show the random DMD is an efficient and powerful approach for background modeling, allowing processing of high resolution videos in real-time. Supplementary materials include implementations of the algorithms in Python.}
+}
+
+@article{Erichson2019,
+  title = {Randomized {{Dynamic Mode Decomposition}}},
+  author = {Erichson, N. Benjamin and Mathelin, Lionel and Kutz, J. Nathan and Brunton, Steven L.},
+  date = {2019},
+  journaltitle = {SIAM Journal on Applied Dynamical Systems},
+  shortjournal = {SIAM J. Appl. Dyn. Syst.},
+  volume = {18},
+  number = {4},
+  pages = {1867--1891},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  doi = {10.1137/18M1215013},
+  abstract = {Dynamic mode decomposition (DMD) is a popular technique for modal decomposition, flow analysis, and reduced-order modeling.  In situations where a system is time varying, one would like to update the system's description online as time evolves. This work provides an efficient method for computing DMD in real time, updating the approximation of a system's dynamics as new data becomes available.  The algorithm does not require storage of past data and computes the exact DMD matrix using rank-1 updates.  A weighting factor that places less weight on older data can be incorporated in a straightforward manner, making the method particularly well suited to time-varying systems.  A variant of the method may also be applied to online computation of ``windowed DMD,'' in which only the most recent data are used.  The efficiency of the method is compared against several existing DMD algorithms: for problems in which the state dimension is less than about 200, the proposed algorithm is the most efficient for real-time computation, and it can be orders of magnitude more efficient than the standard DMD algorithm. The method is demonstrated on several examples, including a time-varying linear system and a more complex example using data from a wind tunnel experiment.  In particular, we show that the method is effective at capturing the dynamics of surface pressure measurements in the flow over a flat plate with an unsteady separation bubble.}
+}
+
+@article{Erichson2019a,
+  title = {Compressed {{Dynamic Mode Decomposition}} for {{Background Modeling}}},
+  author = {Erichson, N. Benjamin and Brunton, Steven L. and Kutz, J. Nathan},
+  date = {2019},
+  journaltitle = {Journal of Real-Time Image Processing},
+  shortjournal = {J Real-Time Image Proc},
+  volume = {16},
+  number = {5},
+  eprint = {1512.04205},
+  eprinttype = {arxiv},
+  pages = {1479--1492},
+  issn = {1861-8200, 1861-8219},
+  doi = {10.1007/s11554-016-0655-2},
+  abstract = {We introduce the method of compressed dynamic mode decomposition (cDMD) for background modeling. The dynamic mode decomposition (DMD) is a regression technique that integrates two of the leading data analysis methods in use today: Fourier transforms and singular value decomposition. Borrowing ideas from compressed sensing and matrix sketching, cDMD eases the computational workload of high resolution video processing. The key principal of cDMD is to obtain the decomposition on a (small) compressed matrix representation of the video feed. Hence, the cDMD algorithm scales with the intrinsic rank of the matrix, rather then the size of the actual video (data) matrix. Selection of the optimal modes characterizing the background is formulated as a sparsity-constrained sparse coding problem. Our results show, that the quality of the resulting background model is competitive, quantified by the F-measure, Recall and Precision. A GPU (graphics processing unit) accelerated implementation is also presented which further boosts the computational efficiency of the algorithm.}
+}
+
+@unpublished{Grigori2024,
+  title = {Randomized {{Householder QR}}},
+  author = {Grigori, Laura and Timsit, Edouard},
+  date = {2024},
+  abstract = {This paper introduces a randomized Householder QR factorization (RHQR). This factorization can be used to obtain a well conditioned basis of a set of vectors and thus can be employed in a variety of applications. The RHQR factorization of the input matrix {$W$}WW is equivalent to the standard Householder QR factorization of matrix {$\PsiW\Psi$}W\textbackslash Psi W, where {$\Psi\Psi\backslash$}Psi is a sketching matrix that can be obtained from any subspace embedding technique. For this reason, the RHQR algorithm can also be reconstructed from the Householder QR factorization of the sketched problem. In most contexts, left-looking RHQR requires a single synchronization per iteration, with half the computational cost of Householder QR, and a similar cost to Randomized Gram-Schmidt (RGS) overall.   We discuss the usage of RHQR factorization in the Arnoldi process and then in GMRES, showing thus how it can be used in Krylov subspace methods to solve systems of linear equations. Based on Charles Sheffield's connection between Householder QR and Modified Gram-Schmidt (MGS), a randomized Modified Gram Schmidt (RMGS) process is also derived.  Numerical experiments show that RHQR produces a well conditioned basis whose sketch is numerically orthogonal, and an accurate factorization. For some very difficult cases, it can be more stable than RGS in both unique precision (half, single, or double) and mixed precision.}
+}
+
+@online{Grosek2014,
+  title = {Dynamic {{Mode Decomposition}} for {{Real-Time Background}}/{{Foreground Separation}} in {{Video}}},
+  author = {Grosek, Jacob and Kutz, J. Nathan},
+  date = {2014},
+  eprint = {1404.7592},
+  eprinttype = {arxiv},
+  doi = {10.48550/arXiv.1404.7592},
+  abstract = {This paper introduces the method of dynamic mode decomposition (DMD) for robustly separating video frames into background (low-rank) and foreground (sparse) components in real-time. The method is a novel application of a technique used for characterizing nonlinear dynamical systems in an equation-free manner by decomposing the state of the system into low-rank terms whose Fourier components in time are known. DMD terms with Fourier frequencies near the origin (zero-modes) are interpreted as background (low-rank) portions of the given video frames, and the terms with Fourier frequencies bounded away from the origin are their sparse counterparts. An approximate low-rank/sparse separation is achieved at the computational cost of just one singular value decomposition and one linear equation solve, thus producing results orders of magnitude faster than a leading separation method, namely robust principal component analysis (RPCA). The DMD method that is developed here is demonstrated to work robustly in real-time with personal laptop-class computing power and without any parameter tuning, which is a transformative improvement in performance that is ideal for video surveillance and recognition applications.},
+  pubstate = {preprint}
+}
+
+@article{Gu1995,
+  title = {A {{Divide-and-Conquer Algorithm}} for the {{Bidiagonal SVD}}},
+  author = {Gu, Ming and Eisenstat, Stanley C.},
+  date = {1995},
+  journaltitle = {SIAM Journal on Matrix Analysis and Applications},
+  shortjournal = {SIAM J. Matrix Anal. Appl.},
+  volume = {16},
+  number = {1},
+  pages = {79--92},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  issn = {0895-4798},
+  doi = {10.1137/S0895479892242232},
+  abstract = {Computing the singular values of a bidiagonal matrix is the final phase of the standard algorithm for the singular value decomposition of a general matrix. A new algorithm that computes all the singular values of a bidiagonal matrix to high relative accuracy independent of their magnitudes is presented. In contrast, the standard algorithm for bidiagonal matrices may compute small singular values with no relative accuracy at all. Numerical experiments show that the new algorithm is comparable in speed to the standard algorithm, and frequently faster.}
+}
+
+@article{Hemati2014,
+  title = {Dynamic Mode Decomposition for Large and Streaming Datasets},
+  author = {Hemati, Maziar S. and Williams, Matthew O. and Rowley, Clarence W.},
+  date = {2014},
+  journaltitle = {Physics of Fluids},
+  shortjournal = {Physics of Fluids},
+  volume = {26},
+  number = {11},
+  pages = {111701},
+  issn = {1070-6631},
+  doi = {10.1063/1.4901016},
+  abstract = {We formulate a low-storage method for performing dynamic mode decomposition that can be updated inexpensively as new data become available; this formulation allows dynamical information to be extracted from large datasets and data streams. We present two algorithms: the first is mathematically equivalent to a standard ``batch-processed'' formulation; the second introduces a compression step that maintains computational efficiency, while enhancing the ability to isolate pertinent dynamical information from noisy measurements. Both algorithms reliably capture dominant fluid dynamic behaviors, as demonstrated on cylinder wake data collected from both direct numerical simulations and particle image velocimetry experiments.}
+}
+
+@article{JakovcevicStor2015,
+  title = {Accurate Eigenvalue Decomposition of Real Symmetric Arrowhead Matrices and Applications},
+  author = {Jakov\v cevi\'c Stor, Nevena and Slapni\v car, Ivan and Barlow, Jesse L.},
+  date = {2015},
+  journaltitle = {Linear Algebra and its Applications},
+  shortjournal = {Linear Algebra and its Applications},
+  series = {Special Issue on Eigenvalue Problems},
+  volume = {464},
+  pages = {62--89},
+  issn = {0024-3795},
+  doi = {10.1016/j.laa.2013.10.007},
+  abstract = {We present a new algorithm for solving the eigenvalue problem for an n\texttimes n real symmetric arrowhead matrix. The algorithm computes all eigenvalues and all components of the corresponding eigenvectors with high relative accuracy in O(n2) operations under certain circumstances. The algorithm is based on a shift-and-invert approach. Only a single element of the inverse of the shifted matrix eventually needs to be computed with double the working precision. Each eigenvalue and the corresponding eigenvector can be computed separately, which makes the algorithm adaptable for parallel computing. Our results extend to Hermitian arrowhead matrices, real symmetric diagonal-plus-rank-one matrices and singular value decomposition of real triangular arrowhead matrices.}
+}
+
+@article{Jiang2023,
+  title = {A New Method to Improve the Efficiency and Accuracy of Incremental Singular Value Decomposition},
+  author = {Jiang, Hansi and Chaudhuri, Arin},
+  date = {2023},
+  journaltitle = {The Electronic Journal of Linear Algebra},
+  volume = {39},
+  pages = {355--378},
+  issn = {1081-3810},
+  doi = {10.13001/ela.2023.7325},
+  abstract = {Singular value decomposition (SVD) has been widely used in machine learning. It lies at the root of data analysis, and it provides the mathematical basis for many data mining techniques. Recently, interest in incremental SVD has been on the rise because it is well suited to streaming data. In this paper, we propose a new algorithm of incremental SVD that is designed to improve both efficiency and accuracy during computation. More specifically, our proposed algorithm takes advantage of the special structures of arrowhead and diagonal-plus-rank-one matrices involved in updating SVD models to expedite the updating process. Moreover, because the singular values are computed independently, the proposed method can be easily parallelized. In addition, as this paper shows, increasing rank can lead to more accurate singular values in the updating process. Experimental results from synthetic and real data sets demonstrate gains in efficiency and accuracy in the updating process.}
+}
+
+@inproceedings{Kutz2015,
+  title = {Multi-Resolution {{Dynamic Mode Decomposition}} for {{Foreground}}/{{Background Separation}} and {{Object Tracking}}},
+  booktitle = {2015 {{IEEE International Conference}} on {{Computer Vision Workshop}} ({{ICCVW}})},
+  author = {Kutz, J. Nathan and Fu, Xing and Brunton, Steve L. and Erichson, N. Benjamin},
+  date = {2015},
+  pages = {921--929},
+  doi = {10.1109/ICCVW.2015.122},
+  abstract = {We demonstrate that the integration of the recently developed dynamic mode decomposition with a multi-resolution analysis allows for a decomposition of video streams into multi-time scale features and objects. A one-level separation allows for background (low-rank) and foreground (sparse) separation of the video, or robust principal component analysis. Further iteration of the method allows a video data set to be separated into objects moving at different rates against the slowly varying background, thus allowing for multiple-target tracking and detection. The algorithm is computationally efficient and can be integrated with many further innovations including compressive sensing architectures and GPU algorithms.},
+  eventtitle = {2015 {{IEEE International Conference}} on {{Computer Vision Workshop}} ({{ICCVW}})}
+}
+
+@article{Martinsson2017,
+  title = {Householder {{QR Factorization With Randomization}} for {{Column Pivoting}} ({{HQRRP}})},
+  author = {Martinsson, Per-Gunnar and Quintana Ort\'I, Gregorio and Heavner, Nathan and family=Geijn, given=Robert, prefix=van de, useprefix=true},
+  date = {2017},
+  journaltitle = {SIAM Journal on Scientific Computing},
+  shortjournal = {SIAM J. Sci. Comput.},
+  volume = {39},
+  number = {2},
+  pages = {C96-C115},
+  publisher = {{Society for Industrial and Applied Mathematics}},
+  issn = {1064-8275},
+  doi = {10.1137/16M1081270},
+  abstract = {This manuscript describes a technique for computing partial rank-revealing factorizations, such as a partial QR factorization or a partial singular value decomposition. The method takes as input a tolerance \$\textbackslash varepsilon\$ and an \$m\textbackslash times n\$ matrix \$\textbackslash boldsymbol\{\textbackslash mathsf\{A\}\}\$ and returns an approximate low-rank factorization of \$\textbackslash boldsymbol\{\textbackslash mathsf\{A\}\}\$ that is accurate to within precision \$\textbackslash varepsilon\$ in the Frobenius norm (or some other easily computed norm). The rank \$k\$ of the computed factorization (which is an output of the algorithm) is in all examples we examined very close to the theoretically optimal \$\textbackslash varepsilon\$-rank. The proposed method is inspired by the Gram--Schmidt algorithm and has the same \$O(mnk)\$ asymptotic flop count. However, the method relies on randomized sampling to avoid column pivoting, which allows it to be blocked, and hence accelerates practical computations by reducing communication. Numerical experiments demonstrate that the accuracy of the scheme is for every matrix that was tried at least as good as column-pivoted QR and is sometimes much better. Computational speed is also improved substantially, in particular on GPU architectures.}
+}
+
+@article{Nedzhibov2023,
+  title = {Extended {{Online DMD}} and {{Weighted Modifications}} for {{Streaming Data Analysis}}},
+  author = {Nedzhibov, Gyurhan},
+  date = {2023},
+  journaltitle = {Computation},
+  volume = {11},
+  number = {6},
+  pages = {114},
+  publisher = {Multidisciplinary Digital Publishing Institute},
+  issn = {2079-3197},
+  doi = {10.3390/computation11060114},
+  abstract = {We present novel methods for computing the online dynamic mode decomposition (online DMD) for streaming datasets. We propose a framework that allows incremental updates to the DMD operator as data become available. Due to its ability to work on datasets with lower ranks, the proposed method is more advantageous than existing ones. A noteworthy feature of the method is that it is entirely data-driven and does not require knowledge of any underlying governing equations. Additionally, we present a modified version of our proposed approach that utilizes a weighted alternative to online DMD. The suggested techniques are demonstrated using several numerical examples.},
+  issue = {6}
+}
+
+@article{Rowley2009,
+  title = {Spectral Analysis of Nonlinear Flows},
+  author = {Rowley, Clarence W. and Mezi\'c, Igor and Bagheri, Shervin and Schlatter, Philipp and Henningson, Dan S.},
+  date = {2009},
+  journaltitle = {Journal of Fluid Mechanics},
+  volume = {641},
+  pages = {115--127},
+  publisher = {Cambridge University Press},
+  issn = {1469-7645, 0022-1120},
+  doi = {10.1017/S0022112009992059},
+  abstract = {We present a technique for describing the global behaviour of complex nonlinear flows by decomposing the flow into modes determined from spectral analysis of the Koopman operator, an infinite-dimensional linear operator associated with the full nonlinear system. These modes, referred to as Koopman modes, are associated with a particular observable, and may be determined directly from data (either numerical or experimental) using a variant of a standard Arnoldi method. They have an associated temporal frequency and growth rate and may be viewed as a nonlinear generalization of global eigenmodes of a linearized system. They provide an alternative to proper orthogonal decomposition, and in the case of periodic data the Koopman modes reduce to a discrete temporal Fourier transform. The Arnoldi method used for computations is identical to the dynamic mode decomposition recently proposed by Schmid \& Sesterhenn (Sixty-First Annual Meeting of the APS Division of Fluid Dynamics, 2008), so dynamic mode decomposition can be thought of as an algorithm for finding Koopman modes. We illustrate the method on an example of a jet in crossflow, and show that the method captures the dominant frequencies and elucidates the associated spatial structures.}
+}
+
+@article{Schmid2010,
+  title = {Dynamic Mode Decomposition of Numerical and Experimental Data},
+  author = {Schmid, Peter J.},
+  date = {2010},
+  journaltitle = {Journal of Fluid Mechanics},
+  volume = {656},
+  pages = {5--28},
+  publisher = {Cambridge University Press},
+  issn = {1469-7645, 0022-1120},
+  doi = {10.1017/S0022112010001217},
+  abstract = {The description of coherent features of fluid flow is essential to our understanding of fluid-dynamical and transport processes. A method is introduced that is able to extract dynamic information from flow fields that are either generated by a (direct) numerical simulation or visualized/measured in a physical experiment. The extracted dynamic modes, which can be interpreted as a generalization of global stability modes, can be used to describe the underlying physical mechanisms captured in the data sequence or to project large-scale problems onto a dynamical system of significantly fewer degrees of freedom. The concentration on subdomains of the flow field where relevant dynamics is expected allows the dissection of a complex flow into regions of localized instability phenomena and further illustrates the flexibility of the method, as does the description of the dynamics within a spatial framework. Demonstrations of the method are presented consisting of a plane channel flow, flow over a two-dimensional cavity, wake flow behind a flexible membrane and a jet passing between two cylinders.}
+}
+
+@article{UlHaq2020,
+  title = {Dynamic Mode Decomposition via Dictionary Learning for Foreground Modeling in Videos},
+  author = {Ul Haq, Israr and Fujii, Keisuke and Kawahara, Yoshinobu},
+  date = {2020},
+  journaltitle = {Computer Vision and Image Understanding},
+  shortjournal = {Computer Vision and Image Understanding},
+  volume = {199},
+  pages = {103022},
+  issn = {1077-3142},
+  doi = {10.1016/j.cviu.2020.103022},
+  abstract = {Accurate extraction of foregrounds in videos is one of the challenging problems in computer vision. In this study, we propose dynamic mode decomposition via dictionary learning (dl-DMD), which is applied to extract moving objects by separating the sequence of video frames into foreground and background information with a dictionary learned using block patches on the video frames. Dynamic mode decomposition (DMD) decomposes spatiotemporal data into spatial modes, each of whose temporal behavior is characterized by a single frequency and growth/decay rate and is applicable to split a video into foregrounds and the background when applying it to a video. And, in dl-DMD, DMD is applied on coefficient matrices estimated over a learned dictionary, which enables accurate estimation of dynamical information in videos. Due to this scheme, dl-DMD can analyze the dynamics of respective regions in a video based on estimated amplitudes and temporal evolution over patches. The results on synthetic data exhibit that dl-DMD outperforms the standard DMD and compressed DMD (cDMD) based methods. Also, the results of an empirical performance evaluation in the case of foreground extraction from videos using publicly available dataset demonstrates the effectiveness of the proposed dl-DMD algorithm and achieves a performance that is comparable to that of the state-of-the-art techniques in foreground extraction tasks.}
+}
+
+@article{Williams2015,
+  title = {A {{Data}}--{{Driven Approximation}} of the {{Koopman Operator}}: {{Extending Dynamic Mode Decomposition}}},
+  shorttitle = {A {{Data}}--{{Driven Approximation}} of the {{Koopman Operator}}},
+  author = {Williams, Matthew O. and Kevrekidis, Ioannis G. and Rowley, Clarence W.},
+  date = {2015},
+  journaltitle = {Journal of Nonlinear Science},
+  shortjournal = {J Nonlinear Sci},
+  volume = {25},
+  number = {6},
+  pages = {1307--1346},
+  issn = {1432-1467},
+  doi = {10.1007/s00332-015-9258-5},
+  abstract = {The Koopman operator is a linear but infinite-dimensional operator that governs the evolution of scalar observables defined on the state space of an autonomous dynamical system and is a powerful tool for the analysis and decomposition of nonlinear dynamical systems. In this manuscript, we present a data-driven method for approximating the leading eigenvalues, eigenfunctions, and modes of the Koopman operator. The method requires a data set of snapshot pairs and a dictionary of scalar observables, but does not require explicit governing equations or interaction with a ``black box'' integrator. We will show that this approach is, in effect, an extension of dynamic mode decomposition (DMD), which has been used to approximate the Koopman eigenvalues and modes. Furthermore, if the data provided to the method are generated by a Markov process instead of a deterministic dynamical system, the algorithm approximates the eigenfunctions of the Kolmogorov backward equation, which could be considered as the ``stochastic Koopman operator'' (Mezic in Nonlinear Dynamics 41(1--3): 309--325,~2005). Finally, four illustrative examples are presented: two that highlight the quantitative performance of the method when presented with either deterministic or stochastic data and two that show potential applications of the Koopman eigenfunctions.}
+}

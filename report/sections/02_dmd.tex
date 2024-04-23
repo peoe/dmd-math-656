@@ -1,0 +1,155 @@
+\section{Dynamic Mode Decomposition}\label{sec:dmd}
+
+As a crucial, data-agnostic method for this report we use the \emph{Dynamic Mode Decomposition} (DMD). DMD is a data-agnostic computational tool founded on Koopman operator theory~\cite{Rowley2009, Williams2015}. For a discrete dynamical system
+\begin{equation*}
+    x_{k + 1} = K x_k,
+\end{equation*}
+where $K$ is an unknown linear operator, DMD uses an algorithm such as Algorithm~\ref{alg:schmid-dmd} to compute approximate eigenpairs known as dynamic modes and dynamic amplitudes, or Ritz pairs, of $K$ from a sequence of data snapshots ${(\bl{f}_k)}_{k = 1}^M, M \in \bb{N}$, split into two data matrices $\bl{X} = (\bl{f}_1, \bl{f}_2, \dots, \bl{f}_{M - 1})$ and $\bl{Y} = (\bl{f}_2, \bl{f}_3, \dots, \bl{f}_M)$, by computing Galerkin approximations of the original matrix. Afterwards, we can use the dynamic pairs to compute reconstructions of the original data and make predictions for future points in time based on these reconstruction.
+
+\begin{algorithm}[!ht]
+    \caption{Schmid DMD, introduced in~\cite{Schmid2010}}\label{alg:schmid-dmd}
+    \KwData{Data matrices $\bl{X}, \bl{Y} \in \bb{C}^{N \times M}$, an optional tolerance $\tau > 0$}
+    Compute the SVD $\bl{X} = U \Sigma V^*$, truncate the SVD to dimension $R$ for a given tolerance $\tau$\;
+    Define the approximate $\tilde{K} = U^* \bl{Y} V \Sigma^{-1} \in \bb{C}^{R \times R}$\;
+    Determine $R$ eigenpairs $(\lambda_i, w_i), i = 1, 2, \dots, R$\;
+    Set $W = (w_1, w_2, \dots, w_R)$\;
+    \Return{Ritz values $\lambda_1, \lambda_2, \dots, \lambda_R$ and Ritz vectors $U W$}
+\end{algorithm}
+
+Unfortunately, not all dynamic modes are good approximations of $K$'s eigenvalues on the data matrices $\bl{X}$ and $\bl{Y}$. To get a feeling for how well each DMD mode can approximate an eigenpair of $K$ we consider the \emph{data-driven Ritz residuals} of the dynamic modes $Z = U W$ defined in~\cite{Drmac2020} as follows:
+\begin{equation}\label{eq:residual}
+    r_i \coloneqq \norm{K (U w_i) - \lambda_i U w_i}{2} = \norm{(\bl{Y} V \Sigma^{-1}) w_i - \lambda_i z_i}{2}.
+\end{equation}
+We use these residuals not only to check for the suitability as eigenpairs, but they can also give us an indication for other properties we shall discuss in Section~\ref{sec:motion-detection}.
+
+After selecting a subset $\cl{I} \subseteq \set{1, 2, \dots, R}$ with $\ell \in \bb{N}$ indices of the available dynamic modes we want to reconstruct the known data from these modes. This is equivalent to solving the problem
+\begin{equation*}
+    \min\limits_{\alpha \in \bb{C}^\ell} \sum\limits_{i = 1}^{M - 1} \omega_i \norm*{\bl{f}_i^2 - \sum\limits_{j = 1}^\ell \alpha_{\cl{I}_j} \lambda_{\cl{I}_j}^{i - 1} z_{\cl{I}_j}}{2}^2 = \min\limits_{\alpha \in \bb{C}^\ell} \norm{(\bl{X} - Z \diag{\alpha} \bb{V}(\lambda)) W}{F}^2
+\end{equation*}
+as defined in~\cite[Equation~(3.1)]{Drmac2020VandermondeKhatriRao}, where $\bb{V}(\lambda) \in \bb{C}^{\ell \times M - 1}$ is the Vandermonde matrix of the dynamic amplitudes and $\omega_i \in \bb{C}$ are given weights. Following the argument in~\cite{Drmac2020VandermondeKhatriRao}, the solution to this least squares problem is given by
+\begin{equation}\label{eq:coefficients}
+    \alpha = {\left( (Z^* Z) \odot (\overline{\bb{V}(\lambda) W^2 \bb{V}^*(\lambda)}) \right)}^{-1} \left( \overline{\bb{V}(\lambda) W} \odot (Z^* \bl{X} W) e \right),
+\end{equation}
+where $e$ is the vector containing only ones, and $\odot$ denotes the Hadamard product of matrices. Finally, we define the reconstruction of a snapshot at time $k$ as the combination of this parameter vector with the other, previously computed quantities:
+\begin{equation}\label{eq:reconstruction}
+    \bl{x}_\text{re}(k) \coloneqq \sum\limits_{i = 1}^\ell \alpha_{\cl{I}_i} \lambda_{\cl{I}_i}^{k - 1} z_{\cl{I}_i}.
+\end{equation}
+We will use this reconstruction formula repeatedly and for different ways of computing the coefficients $\alpha$ for the same input data. Most importantly we note that by splitting the indices over which we sum further into two sets $\cl{I}_1$ and $\cl{I}_2$, we obtain a decomposition $\bl{x}_\text{re} = \bl{x}_\text{re}^{(1)} + \bl{x}_\text{re}^{(2)}$, which we will use in Section~\ref{sec:motion-detection} after consideration of a proper splitting method.
+
+\subsection{QR Compressed DMD}\label{subsec:qr-compression} % MARK: QR COMPRESSION
+
+Another option of getting around the prohibitively large dimension $N$ is to compress the data before computing any DMD quantities. There exist multiple frameworks for these compressions, such as Compressive Sensing~\cite{Brunton2016a}, QR Compression~\cite{Drmac2020VandermondeKhatriRao}, and Randomised Sampling~\cite{Erichson2019}. In this report we choose compression by means of the QR decomposition $Q R = (\bl{f}_1, \bl{f}_2, \dots, \bl{f}_M)$. As a consequence, we introduce two layers of abstraction: the uncompressed and the compressed. We can classify the general steps of algorithms relying on DMD as belonging to one of these layers as follows:
+\begin{enumerate}
+    \item In the uncompressed layer we first have to compress the data $(\bl{f}_1, \bl{f}_2, \dots, \cl{f}_M) = Q R$,
+    \item then we perform DMD on the compressed data obtained from the columns of $R$, and
+    \item lastly we project reconstructions and DMD modes back up into the uncompressed layer for analysis and further treatment as part of our general data processing objective.
+\end{enumerate}
+Most of the previous quatities can be computed in the compressed domain, thus allowing for more efficient computation overall if we do not require any access to the full dimensional quantities.
+
+Importantly, we can compute the residuals of the dynamic pairs as
+\begin{equation*}
+    r_i = \norm{\bl{Y} V \Sigma^{-1} w_i - \lambda_i Q U w_i}{2} = \norm{Q R(\colon, 2 \colon M) V \Sigma^{-1} w_i - \lambda_i Q U w_i}{2} = \norm{R(\colon, 2 \colon M) V \Sigma^{-1} w_i - \lambda_i U w_i}{2},
+\end{equation*}
+assuming that we calculated $R = U \Sigma V$ instead of the SVD of the uncompressed data, as well as the coefficients of the reconstruction through the following expression
+\begin{equation*}
+    \alpha = {\left( (R^* R) \odot (\overline{\bb{V}(\lambda) W^2 \bb{V}^*(\lambda)}) \right)}^{-1} \left( \overline{\bb{V}(\lambda) W} \odot (R^* \bl{G} W) e \right),
+\end{equation*}
+where $\bl{G} = Q^* \bl{X}$ are the compressed  data snapshots, where the structure remains similar to the original problem in Equation~\eqref{eq:coefficients}. On the other hand, to obtain the uncompressed reconstructions and dynamic modes we always need to compute $Q \bl{f}_\text{re}$ or $Q z_i$, which is a disadvantage only if we need frequent access to the high-dimensional modes.
+
+\subsection{QR Streaming DMD}\label{subsec:qr-update} % MARK: QR STREAMING
+
+To our benefit, the QR decompression introduced in Subsection~\ref{subsec:qr-compression} can be easily updated to a streaming setting: Instead of having all data snapshots available at once, we get each $\bl{f}_k$ one by one. As such, it is necessary to devise a way to continuously update the compressed representation of our available data. We do this in two steps: First off all, it is necessary to add columns to the QR decomposition. This is generally useful in the streaming setting because we always assume to get more data, one at a time. Secondly, in the case of a limited snapshot memory we want to delete the first column of the present QR decomposition to save memory in the long run and to speed up the individual computations we might undertake in the compressed domain.
+
+Adding a column to an already existing QR decomposition works as follows: Suppose your current data matrix is $\bl{X}_\text{old} = (\bl{f}_1, \bl{f}_2, \dots, \bl{k})$ and we now its QR decomposition $\bl{X}_\text{old} = Q R$. To compute the QR decomposition of the new data matrix $(\bl{X}_\text{old}, \bl{f}_{k + 1})$, we require the QR decomposition of the incoming data snapshot orthogonalised w.r.t.\ the previous QR basis
+\begin{equation*}
+    (\id{} - Q Q^*) \bl{f}_{k + 1} = \tilde{Q} \tilde{R}.
+\end{equation*}
+This allows us to write $\bl{X}_\text{new}$ as the updated QR Decomposition
+\begin{equation*}
+    \bl{X}_\text{new} = (Q, \tilde{Q}) \begin{pmatrix}
+        R & Q^* \bl{f}_{k + 1} \\
+        0 & \tilde{R}
+    \end{pmatrix}.
+\end{equation*}
+
+Removing the first column, on the other hand, is a bit more involved. In this case, we desire to know the QR decomposition of $\bl{X}_\text{new} = (\bl{f}_2, \bl{f}_3, \dots, \bl{f}_k)$, whereas we a priori know only $Q R = \bl{X}_\text{old} = (\bl{f}_1, \bl{f}_2, \dots, \bl{f}_k)$. Simply removing the first column of $R$ is not sufficient because the new matrix $\tilde{R}$ would not be triangular, instead we observe the following sparsity pattern:
+\begin{equation*}
+    \tilde{R} = \begin{pmatrix}
+        \times & \times & \dots & \times \\
+        \times & \times & \dots & \times \\
+         & \times & \dots & \times \\
+         & & \ddots & \vdots \\
+        \bl{0} & & & \times \\
+    \end{pmatrix}
+\end{equation*}
+Thus, we need to rediagonalise this matrix. We use Givens or Householder rotations akin to~\cite{Daniel1976} and obtain a sequence $H_{k - 1} \dots H_2 H_1$ which, when applied to $\tilde{R}$ reduces it to upper triangular form. We gather the corresponding inverse rotations $H_1^* H_2^* \dots H_{k - 1}^*$ and multiply all of them before applying them to the $Q$ matrix, thus resulting in
+\begin{equation*}
+    Q \tilde{R} = \underbrace{Q (H_1^* H_2^* \dots H_{k - 1}^*)}_{\eqqcolon \hat{Q}} \underbrace{(H_{k - 1} \dots H_2 H_1) \tilde{R}}_{\eqqcolon \hat{R}}.
+\end{equation*}
+Finally, we are left with the new QR decomposition $\bl{X}_\text{new} = \hat{Q} \hat{R}$.
+
+A prototype of a streaming DMD implementation for sequential data, that is $\bl{y}_k = \bl{x}_{k + 1}$, is given in Algorithm~\ref{alg:qr-streaming-dmd}. The parameter $\ell_\text{mem} \in \bb{N}$ represents the length of the snapshot memory $\fr{M}$, that is the maximum number of data snapshots stored throughout the runtime of the algorithm. Initially, we set the snapshot memory $\fr{M}$ as the empty set.
+
+\begin{algorithm}[!ht]
+    \caption{QR Streaming DMD}\label{alg:qr-streaming-dmd}
+    \KwData{Incoming data $\bl{x}_k, \bl{y}_k \in \bb{C}^N$, the current memory $\fr{M}$, the maximal size of memory $\ell_\text{mem}$, an optional tolerance $\tau > 0$}
+    \If{$\abs{\fr{M}} = 0$}{
+        Set $\fr{M} = \set{\bl{x}_k}$\;
+        Compute the QR decomposition $Q R = \texttt{qr}((\fr{M}, \bl{y}_k))$\;
+        Compute the SVD $R(\colon, 1) = U \Sigma V^*$\;
+    }
+    \ElseIf{$\abs{\fr{M}} > 0$ and $\abs{\fr{M}} < \ell_\text{mem}$}{
+        Append $\bl{x}_k$ to $\fr{M}$\;
+        Update the QR decomposition by adding the column $\bl{y}_k$\;
+        Update the SVD decomposition by adding the column $\bl{y}_k$\;
+    }
+    \Else{
+        Append $\bl{x}_k$ to $\fr{M}$, remove the first element of $\fr{M}$\;
+        Update the QR decomposition by adding the column $\bl{y}_k$ and removing the first colum\;
+        Update the SVD decomposition by adding the column $\bl{y}_k$ and removing the first colum\;
+    }
+    \Return{Schmid DMD on $R(\colon, 1 \colon \abs{\fr{M}}), R(\colon, 2 \colon \text{end})$ with tolerance $\tau$, see Algorithm~\ref{alg:schmid-dmd}}
+\end{algorithm}
+
+\subsection{Updating the SVD} % MARK: SVD UPDATE
+
+After every update of the QR decomposition, be it the addition of a column, the deletion of the first column, or both during a single iteration of the streaming algorithm, we are left with a new matrix $R$. During the QR compressed DMD algorithm, we would need to recalculate the SVD of this matrix after every update, however we can use similar updating procedures for the SVD. Suppose that we have previously computed the SVD $\bl{X}_\text{old} = U_\text{old} \Sigma_\text{old} V_\text{old}^* \in \bb{C}^{N \times k}$. The addition of a column begins with the following sequence of computations:
+\begin{align*}
+    \bl{X}_\text{new} &= (\bl{X}_\text{old}, 0) + \bl{f}_\text{new} e_{k + 1}^T \\
+     &= U_\text{old} \Sigma_\text{old} (V_\text{old}^T, 0) + \bl{f}_\text{new} e_{k + 1}^T \\
+     &= (U_\text{old}, \bl{f}_\text{new}) \begin{pmatrix}
+        \Sigma_\text{old} & 0 \\
+        0 & 1 \\
+     \end{pmatrix} \begin{pmatrix}
+        V_\text{old}^* & 0 \\
+        0 & 1
+     \end{pmatrix} \\
+     &= (U_\text{old}, \bl{r}) \begin{pmatrix}
+        \Sigma_\text{old} & \bl{d} \\
+        0 & \rho \\
+     \end{pmatrix} \begin{pmatrix}
+        V_\text{old}^* & 0 \\
+        0 & 1
+     \end{pmatrix},
+\end{align*}
+where we used the following projected quantities:
+\begin{equation*}
+    \bl{d} \coloneqq U^* \bl{f}_\text{new},\quad \bl{p} \coloneqq (\id{} - U U^*) \bl{f}_\text{new},\quad \rho \coloneqq \norm{\bl{p}}{2},\quad \bl{r} = \bl{p} / \rho.
+\end{equation*}
+As a last step, it remains to compute the SVD of the central arrowhead matrix
+\begin{equation*}
+    \begin{pmatrix}
+        \Sigma_\text{old} & \bl{d} \\
+        0 & \rho \\
+     \end{pmatrix} = \tilde{U} \tilde{\Sigma} \tilde{V}^*,
+\end{equation*}
+for which there exist efficient algorithms with a runtime of $\cl{O}((k + 1)^2)$, see e.g.~\cite{Gu1995, JakovcevicStor2015, Jiang2023}. Afterwards, we assemble the new SVD by multiplying
+\begin{equation*}
+    \bl{X}_\text{new} = ((U_\text{old}, \bl{r}) \tilde{U}) \tilde{\Sigma} \left( \tilde{V}^* \begin{pmatrix}
+        V_\text{old}^* & 0 \\
+        0 & 1
+     \end{pmatrix} \right) = U_\text{new} \Sigma_\text{new} V_\text{new}^*.
+\end{equation*}
+Thus, whenever we add a row to the data matrix and update the corresponding QR decomposition, we can similarly update the underlying SVD for a faster computation.
+
+The analogous removal of the first column also reduces to the computation of the eigendecomposition of a diagonal-plus-rank-one matrix, which for brevity we leave out of this report. If the reader is interested in these methods, we refer them to sources such as~\cite{Jiang2023}.

@@ -1,0 +1,59 @@
+\section{Foreground/Background Separation and Motion Detection}\label{sec:motion-detection}
+
+In this section, we introduce an application of DMD in image processing. In particular, we link the Ritz values computed in Section~\ref{sec:dmd} to a segmentation of foreground and background data, and use these decompositions to compute a priori data-agnostic foreground masks. This approach was first introduced in~\cite{Grosek2014}, where the authors computed the DMD for a set of video frames and reconstructed one background snapshot to compute a foreground mask for every frame. This paper relies on the full decomposition, making it slow when compared to different compressed approaches such as compressive DMD or randomised DMD.
+
+\subsection{Foreground/Background Separation}\label{subsec:fg-bg-separation} % MARK: FB/BG
+
+The main idea used in~\cite{Grosek2014, Kutz2015, Erichson2016} is to compare the logarithmic dynamic amplitudes
+\begin{equation*}
+    \omega_i = \log{(\lambda_i)},\quad i = 1, 2, \dots, R,
+\end{equation*}
+and find those pairs for which the logarithmic amplitude is close to zero. These Ritz values change very slowly during each successive time step in the reconstruction~\ref{eq:reconstruction}, hence it is suitable to consider these as the background of the data. Setting $\cl{I}_\text{BG} \subseteq \set{1, 2, \dots, R}$ as the subset of these background amplitudes we can split the reconstruction formula into a foreground and a background object as follows
+\begin{equation*}
+    \bl{f}_\text{re}(k) = \bl{f}_\text{BG}(k) + \bl{f}_\text{FG}(k) = \sum\limits_{i \in \cl{I}_\text{BG}} \alpha_i \lambda_i^{k - 1} z_i + \sum\limits_{i \not\in \cl{I}_\text{BG}} \alpha_i \lambda_i^{k - 1} z_i.
+\end{equation*}
+Lastly, we define the foregound mask as the thresholded matrix-valued function
+\begin{equation*}
+    \left(m_\text{FG}(k)\right)_{i, j} \coloneqq \begin{cases}
+        1, & \abs{\bl{f}_k - \bl{f}_\text{BG}(k)} \geq \tau \\
+        0, & \abs{\bl{f}_k - \bl{f}_\text{BG}(k)} < \tau
+    \end{cases},
+\end{equation*}
+where $\tau > 0$ is a tolerance chosen prior to the computation.
+
+\subsection{Backgrounds in QR Streaming DMD} % MARK: MOTION
+
+The procedure described in Subsection~\ref{subsec:fg-bg-separation} illustrates the application of the DMD method to imaging problems, given that we know the entirety of the data matrix beforehand. This assumption may not be valid in cases where storing large amounts of data are impractical or the data are not available all at once. In such a case it is close at hand to employ a streaming framework and iteratively compute the desired results.
+
+There is however, one immediate problem: If we constrain the size of the memory available during the computation we might encounter the case that all relevant data of the actual background does no longer appear in the kept memory. Consider, for example, a streaming implementation with a memory of exactly $10$ snapshots. Suppose that $\bl{f}_T$ contains only the background, and that every snapshot after it has some moving object in it. Then, after advancing $10$ steps in time, the memory of the method is $\set{\bl{f}_{T + 1}, \bl{f}_{T + 2}, \dots, \bl{f}_{T + 10}}$, and therefore no longer contains any pure representation of the original background. Thus, a comparison of the streaming background with the incoming data yields a foreground mask only containing local and recent changes: that is if some object moves within a few frames of the video, then we can detect changes in its position. Effectively, this method only allows for detection of a \emph{motion mask} instead of complete foreground/background separation, where the motion is identified as the change with respect to the background recovered from the most recent streaming data. A side effect of this analysis is that large moving objects with a uniform texture will register in the motion mask only along the moving edges, e.g.\ the front and the back of a moving bicycle. We illustrate this behaviour more in Section~\ref{sec:numerical-experiments}.
+
+To mitigate the lack of a fixed reference background for streaming applications with limited available memory, we can try and compute a more permanent background by evaluating the approximation quality of the current DMD residuals as defined in Equation~\ref{eq:residual}. Looking at the minimum absolute value of the residuals from the numerical example in Subsection~\ref{subsec:pedestrians}, we notice that at some points in time the value increases significantly, whereas before it remained about constant, see Figure~\ref{fig:pedestrian-residual}. We exploit this by updating the stored background reconstruction whenever the minimal residual is below a certain predefined tolerance $\rho > 0$. Whenever this threshold is exceeded, we compute the foreground mask of the current frame from the difference $\bl{f}_k - \bl{f}_\text{BG}$, where $bl{f}_\text{BG}$ is the most recent background reconstruction with a minimal residual smaller than the tolerance. This has the additional benefit that we do not compute a foreground mask for pure background snapshots, hence reducing the output of the algorithm to actual time periods of interest, that is spans of time in which foreground objects move.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tikzpicture}
+        \pgfplotsset{
+            width=16cm,
+            height=7cm
+        }
+        \begin{axis}[
+            xmin=0, xmax=846,
+            ymin=1e-3, ymax=1e-1,
+            ymode=log,
+            xlabel={Index $i$},
+            ylabel={Residual $r_i$}
+        ]
+            \addplot[smooth, thick, samples=50] coordinates {(50, 1e-1) (50, 1e-3)};
+            \addplot[smooth, thick, samples=50] coordinates {(465, 1e-1) (465, 1e-3)};
+            \addplot[smooth, thick, samples=50] coordinates {(575, 1e-1) (575, 1e-3)};
+            \addplot[smooth, thick, samples=50] coordinates {(805, 1e-1) (805, 1e-3)};
+            \addplot[fill=lightgray, draw=none] coordinates {(0, 1e-3) (50, 1e-3) (50, 1e-1) (0, 1e-1)} \closedcycle;
+            \addplot[fill=lightgray, draw=none] coordinates {(465, 1e-3) (575, 1e-3) (575, 1e-1) (465, 1e-1)} \closedcycle;
+            \addplot[fill=lightgray, draw=none] coordinates {(805, 1e-3) (846, 1e-3) (846, 1e-1) (805, 1e-1)} \closedcycle;
+            \addplot[color=red, smooth, thick] table[col sep=comma, header=has colnames, x index={0}, y index={1}] {pedestrian_motion_res.csv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Residuals $r_i$ for the pedestrian dataset from Subsection~\ref{subsec:pedestrians} for a memory size of $5$ data snapshots; Red: residuals as computed during the streaming algorithm; Grey shaded areas indicate indices of frames where the algorithm determined the residual to be less than the specified tolerance $\rho$.}\label{fig:pedestrian-residual}
+\end{figure}
+
+This method has the additional benefit that backgrounds can change continually throughout the stream of data snapshots, and after a short readjustment period a relevant background will be computed. In contrast, a non-streaming DMD method relies entirely on the accuracy of the background prediction from all data at once, and may be substantially worse. Thus, using sets of data limited in time not only speeds up every single evaluation and allows for real-time applications, but it may also provide a more stable method.

@@ -1,0 +1,29 @@
+\usepackage[margin=2cm]{geometry}
+
+%        UK date        %
+\usepackage{datetime}
+\newdateformat{UKvardate}{%
+\THEDAY\ \monthname[\THEMONTH] \THEYEAR}
+\UKvardate
+
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{todonotes}
+\newcommand{\itodo}[1]{\todo[inline]{#1}}
+
+% refcheck highlights labels and checks for unused labels
+% \usepackage{refcheck}
+
+\usepackage{tabularx}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\setlength{\extrarowheight}{7pt}
+
+\input{config/collections/math}
+\input{config/collections/tikz.tex}
+
+\usepackage[backend=biber, url=false, isbn=false, maxbibnames=99, giveninits=true, date=year]{biblatex}
+% \renewbibmacro{in:}{}
+\addbibresource{refs.bib}
+
+%        Custom enumerations        %
+\usepackage{enumitem}

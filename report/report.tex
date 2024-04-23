@@ -1,0 +1,34 @@
+\documentclass{article}
+
+\input{config/preamble}
+
+\title{Motion Detection as a Consequence of Foreground/Background Separation using QR Streaming Dynamic Mode Decomposition}
+\author{Peter Oehme\thanks{EPFL, Lausanne, Switzerland (\href{mailto:peter.oehme@epfl.ch}{peter.oehme@epfl.ch})}}
+
+\begin{document}
+    \maketitle
+
+    \begin{abstract}
+        This report discusses a QR compressed streaming DMD algorithm with applications to motion detection and foreground/background separation in real-time data-based video processing without full data availability. We explain how the iterative updating works hand in hand with the data compression to handle individually provided data and adaptively select relevant information within the video frames. Further, we indicate how a basic foreground/background separation algorithm directly yields a motion detection method in the streaming data setting, and how it can be adapted to serve its original purpose of foreground object detection. Three different realistic datasets are employed to demonstrate the efficacy of this approach, and to demonstrate its short-comings in noise resistance and background permanence.
+    \end{abstract}
+
+    \section{Introduction}
+
+    The Dynamic Mode Decomposition (DMD) currently enjoys a lot of attention for applications in data-driven settings due to its versatility. Most of these applications use the fact that DMD does not require any knowledge of the data to obtain generalised image processing systems (\cite{Grosek2014, Kutz2015, Bi2018, Erichson2019a, UlHaq2020}). Among these image processing problems we tackle the tasks of foreground/background separation, and, due to the details of our implementation, motion detection. We demonstrate that our algorithms produce usable and reproducable results in a real-time viable runtime through the means of a streaming DMD implementation.
+
+    The two main aspects of streaming DMD are: the compression of the data, and the use of the streaming framework, where the algorithm operates on iteratively supplied data snapshots. The former of these two has made advances through the use of compressed sensing as well as randomised sampling methods, see e.g.~\cite{Brunton2016a} and~\cite{Erichson2019}, however the compression heavily depends on how well one can approximate currently available data, and most update computations are expensive. To remedy the update costs, a streaming DMD and an online DMD have been developped by~\cite{Hemati2014} and~\cite{Nedzhibov2023}. Here, the authors successively update approximates of the discretised Koopman operator by updating either projection matrices or the underlying SVD directly. This report aims to lay out a third option to these two publications, one that does not change the main DMD algorithm, but instead uses update formulae of the QR decomposition and the SVD to keep track of the necessary quantities for which we compute the DMD as motivated by the examination of snapshot reconstruction in~\cite{Drmac2020VandermondeKhatriRao}.
+
+    We structure this report as follows: Section~\ref{sec:dmd} introduces the DMD and its accompanying quantities related to snapshot reconstruction and dynamic mode residuals. We also explain how simple QR compression works, and how it speeds up the evaluation of both the residuals and the reconstruction coefficients, concluding in an explanation of how to use update formulas to use QR decompression in an incremental algorithm. In Section~\ref{sec:motion-detection} we highlight how foreground/background separation works once one has computed the DMD of data matrices. By analysis of our streaming and compressed algorithm we explain how the dynamically reconstructed backgrounds suit themselves to motion detection, and we provide a way to take some of these dynamic backgrounds to perform the original separation task instead of motion detection. We demonstrate the performance of our basic Python implementation on three sample datasets in Section~\ref{sec:numerical-experiments}, and conclude the report in Section~\ref{sec:conclusion} by pointing out various ways of further research to improve the results presented here.
+    
+    \input{sections/02_dmd.tex}
+    \input{sections/03_motion_detection.tex}
+    \input{sections/04_experiments.tex}
+
+    \section{Conclusion and Outlook}\label{sec:conclusion}
+
+    In this report we discuss a dynamic algorithm for motion detection and foreground/background separation in a data-agnostic setting using QR compressed streaming DMD. We demonstrate that the algorithm can produce usable and interpretable results independent of the data supplied after fine tuning of only a small number of parameters. The resulting method is significantly faster than classical DMD, where additionally all data needs to be accessible all at once. Thus, the ideas described in this report suit themselves in particular to real time applications, where both memory is limited and speed is of essential importance.
+
+    To add onto the ideas of this report, a number of approaches may be eligible. Instead of applying direct QR compression one could employ a randomised method such as Randomised QR decompositions, see e.g.~\cite{Martinsson2017, Balabanov2022, Grigori2024}. Additionally, different compression regimes such as randomised DMD~\cite{Erichson2019} or compressed sensing DMD~\cite{Brunton2016a} could be used, though it would be necessary to consider if these frameworks can be efficiently adapted to a streaming framework. Furthermore, this work can be expanded by using an adaptive extension approach such as the adaptive basis update of~\cite{Hemati2014}. Another aspect to examine is the memory size --- while a fixed size snapshot memory works remarkably well, it may be that an adaptively growing or shrinking memory provides further benefits. Finally, rigorous analysis of the tolerance hyperparameters would aid in tuning the algorithm on-the-fly to avoid potentially expensive precalculations, and usage of methods to increase noise resistance would improve the performance in more challenging data settings.
+
+    \printbibliography
+\end{document}
