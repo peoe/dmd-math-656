@@ -120,7 +120,7 @@ class StreamingDMD(DMD): #MARK: Streaming
         residuals = residuals[P]
         evals = evals[P]
         evecs = evecs[:, P]
-        return residuals, self._Q @ (_U @ evecs), evals
+        return residuals, _U @ evecs, evals
     
     def __call__(self, x):
         _U, V_S_inv = self._tsvd()
