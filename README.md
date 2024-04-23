@@ -49,11 +49,16 @@ If you only want to download the data, run
 make data
 ```
 
-If you only want to call the scripts, execute the `run` target of the makefile. This will also download all the data if the data has not yet been stored locally.
+If you only want to call the scripts, execute the `all` target of the makefile. The `all` target runs motion detection and foreground/background separation on threee datasets each, plots residuals, saves data matrices to file, and renders GIFs of the results. This will also download all the data if the data has not yet been stored locally.
 
 ```zsh
-make run
+make all
 ```
+
+The other possible make targets are:
+ * `gifs`: Run all examples, but only render GIFs.
+ * `matrices`: Run all examples, but only save data matrices to file.
+ * `plots`: Run all examples, but only plot residuals.
 
 ## License
 
