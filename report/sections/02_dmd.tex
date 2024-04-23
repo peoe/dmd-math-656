@@ -1,6 +1,6 @@
 \section{Dynamic Mode Decomposition}\label{sec:dmd}
 
-As a crucial, data-agnostic method for this report we use the \emph{Dynamic Mode Decomposition} (DMD). DMD is a data-agnostic computational tool founded on Koopman operator theory~\cite{Rowley2009, Williams2015}. For a discrete dynamical system
+As a crucial method for this report we use the \emph{Dynamic Mode Decomposition} (DMD). DMD is a data-agnostic computational tool founded on Koopman operator theory~\cite{Rowley2009, Williams2015}. For a discrete dynamical system
 \begin{equation*}
     x_{k + 1} = K x_k,
 \end{equation*}
@@ -22,7 +22,7 @@ Unfortunately, not all dynamic modes are good approximations of $K$'s eigenvalue
 \end{equation}
 We use these residuals not only to check for the suitability as eigenpairs, but they can also give us an indication for other properties we shall discuss in Section~\ref{sec:motion-detection}.
 
-After selecting a subset $\cl{I} \subseteq \set{1, 2, \dots, R}$ with $\ell \in \bb{N}$ indices of the available dynamic modes we want to reconstruct the known data from these modes. This is equivalent to solving the problem
+After selecting a subset $\cl{I} \subseteq \set{1, 2, \dots, R}$ with $\ell \in \bb{N}$ indices of the available dynamic modes, we want to reconstruct the known data from these modes. This is equivalent to solving the problem
 \begin{equation*}
     \min\limits_{\alpha \in \bb{C}^\ell} \sum\limits_{i = 1}^{M - 1} \omega_i \norm*{\bl{f}_i^2 - \sum\limits_{j = 1}^\ell \alpha_{\cl{I}_j} \lambda_{\cl{I}_j}^{i - 1} z_{\cl{I}_j}}{2}^2 = \min\limits_{\alpha \in \bb{C}^\ell} \norm{(\bl{X} - Z \diag{\alpha} \bb{V}(\lambda)) W}{F}^2
 \end{equation*}
@@ -40,11 +40,11 @@ We will use this reconstruction formula repeatedly and for different ways of com
 
 Another option of getting around the prohibitively large dimension $N$ is to compress the data before computing any DMD quantities. There exist multiple frameworks for these compressions, such as Compressive Sensing~\cite{Brunton2016a}, QR Compression~\cite{Drmac2020VandermondeKhatriRao}, and Randomised Sampling~\cite{Erichson2019}. In this report we choose compression by means of the QR decomposition $Q R = (\bl{f}_1, \bl{f}_2, \dots, \bl{f}_M)$. As a consequence, we introduce two layers of abstraction: the uncompressed and the compressed. We can classify the general steps of algorithms relying on DMD as belonging to one of these layers as follows:
 \begin{enumerate}
-    \item In the uncompressed layer we first have to compress the data $(\bl{f}_1, \bl{f}_2, \dots, \cl{f}_M) = Q R$,
+    \item In the uncompressed layer we first have to compress the data $(\bl{f}_1, \bl{f}_2, \dots, \bl{f}_M) = Q R$,
     \item then we perform DMD on the compressed data obtained from the columns of $R$, and
     \item lastly we project reconstructions and DMD modes back up into the uncompressed layer for analysis and further treatment as part of our general data processing objective.
 \end{enumerate}
-Most of the previous quatities can be computed in the compressed domain, thus allowing for more efficient computation overall if we do not require any access to the full dimensional quantities.
+Most of the previous quantities can be computed in the compressed domain, thus allowing for more efficient computation overall if we do not require any access to the full dimensional quantities.
 
 Importantly, we can compute the residuals of the dynamic pairs as
 \begin{equation*}
@@ -60,11 +60,11 @@ where $\bl{G} = Q^* \bl{X}$ are the compressed  data snapshots, where the struct
 
 To our benefit, the QR decompression introduced in Subsection~\ref{subsec:qr-compression} can be easily updated to a streaming setting: Instead of having all data snapshots available at once, we get each $\bl{f}_k$ one by one. As such, it is necessary to devise a way to continuously update the compressed representation of our available data. We do this in two steps: First off all, it is necessary to add columns to the QR decomposition. This is generally useful in the streaming setting because we always assume to get more data, one at a time. Secondly, in the case of a limited snapshot memory we want to delete the first column of the present QR decomposition to save memory in the long run and to speed up the individual computations we might undertake in the compressed domain.
 
-Adding a column to an already existing QR decomposition works as follows: Suppose your current data matrix is $\bl{X}_\text{old} = (\bl{f}_1, \bl{f}_2, \dots, \bl{k})$ and we now its QR decomposition $\bl{X}_\text{old} = Q R$. To compute the QR decomposition of the new data matrix $(\bl{X}_\text{old}, \bl{f}_{k + 1})$, we require the QR decomposition of the incoming data snapshot orthogonalised w.r.t.\ the previous QR basis
+Adding a column to an already existing QR decomposition works as follows: Suppose your current data matrix is $\bl{X}_\text{old} = (\bl{f}_1, \bl{f}_2, \dots, \bl{k})$ and we know its QR decomposition $\bl{X}_\text{old} = Q R$. To compute the QR decomposition of the new data matrix $(\bl{X}_\text{old}, \bl{f}_{k + 1})$, we require the QR decomposition of the incoming data snapshot orthogonalised w.r.t.\ the previous QR basis
 \begin{equation*}
     (\id{} - Q Q^*) \bl{f}_{k + 1} = \tilde{Q} \tilde{R}.
 \end{equation*}
-This allows us to write $\bl{X}_\text{new}$ as the updated QR Decomposition
+This allows us to write $\bl{X}_\text{new}$ as the updated QR decomposition
 \begin{equation*}
     \bl{X}_\text{new} = (Q, \tilde{Q}) \begin{pmatrix}
         R & Q^* \bl{f}_{k + 1} \\
@@ -82,7 +82,7 @@ Removing the first column, on the other hand, is a bit more involved. In this ca
         \bl{0} & & & \times \\
     \end{pmatrix}
 \end{equation*}
-Thus, we need to rediagonalise this matrix. We use Givens or Householder rotations akin to~\cite{Daniel1976} and obtain a sequence $H_{k - 1} \dots H_2 H_1$ which, when applied to $\tilde{R}$ reduces it to upper triangular form. We gather the corresponding inverse rotations $H_1^* H_2^* \dots H_{k - 1}^*$ and multiply all of them before applying them to the $Q$ matrix, thus resulting in
+Thus, we need to rediagonalise this matrix. We use Givens or Householder rotations akin to~\cite{Daniel1976} and obtain a sequence $H_{k - 1} \dots H_2 H_1$ which, when applied to $\tilde{R}$, reduces it to upper triangular form. We gather the corresponding inverse rotations $H_1^* H_2^* \dots H_{k - 1}^*$ and multiply all of them before applying them to the $Q$ matrix, thus resulting in
 \begin{equation*}
     Q \tilde{R} = \underbrace{Q (H_1^* H_2^* \dots H_{k - 1}^*)}_{\eqqcolon \hat{Q}} \underbrace{(H_{k - 1} \dots H_2 H_1) \tilde{R}}_{\eqqcolon \hat{R}}.
 \end{equation*}
@@ -105,8 +105,8 @@ A prototype of a streaming DMD implementation for sequential data, that is $\bl{
     }
     \Else{
         Append $\bl{x}_k$ to $\fr{M}$, remove the first element of $\fr{M}$\;
-        Update the QR decomposition by adding the column $\bl{y}_k$ and removing the first colum\;
-        Update the SVD decomposition by adding the column $\bl{y}_k$ and removing the first colum\;
+        Update the QR decomposition by adding the column $\bl{y}_k$ and removing the first column\;
+        Update the SVD decomposition by adding the column $\bl{y}_k$ and removing the first column\;
     }
     \Return{Schmid DMD on $R(\colon, 1 \colon \abs{\fr{M}}), R(\colon, 2 \colon \text{end})$ with tolerance $\tau$, see Algorithm~\ref{alg:schmid-dmd}}
 \end{algorithm}
